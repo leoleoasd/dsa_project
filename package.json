@@ -1,0 +1,26 @@
+{
+  "name": "wpb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack-dev-server --mode development",
+    "build": "webpack-cli --mode production"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.15.5",
+    "css-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.3.2",
+    "style-loader": "^3.2.1",
+    "webpack": "^5.52.1",
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^4.2.0"
+  },
+  "dependencies": {
+    "babel-loader": "^8.2.2",
+    "sass": "^1.39.2",
+    "sass-loader": "^12.1.0"
+  }
+}
