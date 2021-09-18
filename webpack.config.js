@@ -13,6 +13,11 @@ module.exports = {
   devServer: {
     port: 9090,
   },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src/'),
+    },
+  },
   plugins: [
     new _$htmlWebpackPlugin({
       title: '飞机模拟系统',

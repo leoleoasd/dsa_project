@@ -1,7 +1,5 @@
-require('./style/main.scss');
-console.log(123);
-// const a = 1;
-let i;
-for (i = 0; i < 20; ++ i) {
-  console.log(123);
-}
+import * as PIXI from 'pixi.js';
+import '@/style/main.scss';
+
+const app = new PIXI.Application({width: 256, height: 256});
+document.querySelector('#app').appendChild(app.view);
