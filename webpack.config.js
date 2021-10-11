@@ -17,6 +17,7 @@ module.exports = {
     alias: {
       '@': path.resolve(__dirname, './src/'),
     },
+    extensions: ['.tsx', '.ts', '.js'],
   },
   plugins: [
     new _$htmlWebpackPlugin({
@@ -29,9 +30,10 @@ module.exports = {
       extensions: ['ts'],
       context: 'src',
       emitError: true,
-      emitWarning: true,
+      // emitWarning: true,
       failOnError: true,
-      failOnWarning: true,
+      quiet: true,
+      // failOnWarning: true,
     }),
   ],
   module: {
