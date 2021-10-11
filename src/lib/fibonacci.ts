@@ -1,14 +1,17 @@
+import {pull} from 'lodash';
 
 class FibHeapNode {
     children: Array<FibHeapNode>;
     key: number;
     degree: number;
     mark: boolean;
-    parent: FibHeapNode;
+    father: FibHeapNode;
+    data: any;
 
-    constructor(key: number) {
+    constructor(key: number, data: any) {
       this.key = key;
       this.children = [];
+      this.data = data;
       // console.log('CONSTRUCT', this);
     }
 
@@ -33,8 +36,8 @@ class FibHeap {
       this.min = null;
     }
 
-    findMin(): number {
-      return this.min.key;
+    findMin(): FibHeapNode {
+      return this.min;
     }
 
     walk() {
@@ -71,7 +74,7 @@ class FibHeap {
           this.nodes.splice(this.nodes.indexOf(y), 1);
           i--;
           x.children.push(y);
-          y.parent = x;
+          y.father = x;
           x.degree++;
           y.mark = false;
           A[d] = null;
@@ -101,7 +104,7 @@ class FibHeap {
       if ( z != null) {
         for (const c of z.children ?? []) {
           this.nodes.push(c);
-          c.parent = null;
+          c.father = null;
         }
         z.children = [];
         this.nodes.splice(this.nodes.indexOf(z), 1);
@@ -115,14 +118,49 @@ class FibHeap {
       this.n --;
     }
 
-    insert(key: number) {
-      this.insertNode(new FibHeapNode(key));
+    decreaseKey(n: FibHeapNode, key: number) {
+      if (key > n.key) {
+        throw new Error('New key is greater than old key!');
+      }
+      n.key = key;
+      const y = n.father;
+      if (y != null && n.key < y.key) {
+        const cut = (x: FibHeapNode, y: FibHeapNode) => {
+          pull(y.children, x);
+          y.degree --;
+          this.nodes.push(x);
+          x.father = null;
+          x.mark = false;
+        };
+        const cascadingCut = (y: FibHeapNode) => {
+          const z = y.father;
+          if (z != null) {
+            if (y.mark == false) {
+              y.mark = true;
+            } else {
+              cut(y, z);
+              cascadingCut(z);
+            }
+          }
+        };
+        cut(n, y);
+        cascadingCut(y);
+      }
+      if (n.key < this.min.key ) {
+        this.min = n;
+      }
+    }
+
+    insert(key: number, data: any): FibHeapNode {
+      const n = new FibHeapNode(key, data);
+      this.insertNode(n);
       console.log('Inserted ', key);
+      return n;
     }
 
     insertNode(x: FibHeapNode) {
       x.degree = 0;
-      x.parent = null;
+      x.father = null;
       x.children = [];
       x.mark = false;
       if (this.min === null) {
