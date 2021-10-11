@@ -1,4 +1,4 @@
-import {pull} from 'lodash';
+import * as _ from 'lodash';
 
 class FibHeapNode {
     children: Array<FibHeapNode>;
@@ -71,7 +71,7 @@ class FibHeap {
           if (x.key > y.key) {
             [y, x] = [x, y];
           }
-          this.nodes.splice(this.nodes.indexOf(y), 1);
+          _.pull(this.nodes, y);
           i--;
           x.children.push(y);
           y.father = x;
@@ -107,7 +107,7 @@ class FibHeap {
           c.father = null;
         }
         z.children = [];
-        this.nodes.splice(this.nodes.indexOf(z), 1);
+        _.pull(this.nodes, z);
       }
       if (this.nodes.length == 0) {
         this.min = null;
@@ -126,7 +126,7 @@ class FibHeap {
       const y = n.father;
       if (y != null && n.key < y.key) {
         const cut = (x: FibHeapNode, y: FibHeapNode) => {
-          pull(y.children, x);
+          _.pull(y.children, x);
           y.degree --;
           this.nodes.push(x);
           x.father = null;
