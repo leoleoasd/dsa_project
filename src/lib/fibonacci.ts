@@ -14,15 +14,6 @@ class FibHeapNode {
       this.data = data;
       // console.log('CONSTRUCT', this);
     }
-
-  // get children() {
-  //   return this.c;
-  // }
-  //
-  // set children(newC) {
-  //   console.log('SET', this, newC);
-  //   this.c = newC;
-  // }
 }
 
 class FibHeap {
@@ -30,16 +21,27 @@ class FibHeap {
     min: FibHeapNode;
     n: number;
 
+    /**
+     * Make an empty heap.
+     */
     constructor() {
       this.n = 0;
       this.nodes = [];
       this.min = null;
     }
 
+    /**
+     * return the minimal node of heap.
+     * Time Complexity: O(1)
+     * @return {FibHeapNode} the minimal node.
+     */
     findMin(): FibHeapNode {
       return this.min;
     }
 
+    /**
+     * Recursively walk through this tree, pretty-printing it's structure.
+     */
     walk() {
       console.log('MIN', this.min);
       const _walk = (prefix: string, nodes: FibHeapNode[]) => {
@@ -53,12 +55,13 @@ class FibHeap {
       _walk('', this.nodes);
     }
 
-
+    /**
+     * Merge nodes according to rules if needed.
+     * Time Complexity: O(lg(n))
+     */
     consolidate() {
       const A = new Array<FibHeapNode>(
           Math.floor(Math.log(this.n) / Math.log((1 + Math.sqrt( 5)) / 2)));
-      // console.log(
-      //     Math.floor(Math.log(this.n) / Math.log((1 + Math.sqrt(5)) / 2)));
       for (let i = 0; i < A.length; i++) {
         A[i] = null;
       }
@@ -99,6 +102,10 @@ class FibHeap {
       // console.log(A);
     }
 
+    /**
+     * Extract the minimal node from this heap.
+     * Time Complexity: O(lg(n))
+     */
     extractMin() {
       const z = this.min;
       if ( z != null) {
@@ -116,6 +123,11 @@ class FibHeap {
         this.consolidate();
       }
       this.n --;
+    }
+
+    remove(n: FibHeapNode) {
+      this.decreaseKey(n, Number.NEGATIVE_INFINITY);
+      this.extractMin();
     }
 
     decreaseKey(n: FibHeapNode, key: number) {
