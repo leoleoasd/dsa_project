@@ -18,7 +18,7 @@ class FibHeapNode {
 
 class FibHeap {
     nodes: Array<FibHeapNode>;
-    min: FibHeapNode;
+    max: FibHeapNode;
     n: number;
 
     /**
@@ -27,23 +27,23 @@ class FibHeap {
     constructor() {
       this.n = 0;
       this.nodes = [];
-      this.min = null;
+      this.max = null;
     }
 
     /**
-     * return the minimal node of heap.
+     * return the maximal node of heap.
      * Time Complexity: O(1)
-     * @return {FibHeapNode} the minimal node.
+     * @return {FibHeapNode} the maximal node.
      */
-    findMin(): FibHeapNode {
-      return this.min;
+    findMax(): FibHeapNode {
+      return this.max;
     }
 
     /**
      * Recursively walk through this tree, pretty-printing it's structure.
      */
-    walk() {
-      console.log('MIN', this.min);
+    print() {
+      // console.log('MIN', this.max);
       const _walk = (prefix: string, nodes: FibHeapNode[]) => {
         nodes.forEach(function(node) {
           console.log(prefix + '--', node.key);
@@ -53,6 +53,18 @@ class FibHeap {
         });
       };
       _walk('', this.nodes);
+    }
+
+    walk(fun: (node: FibHeapNode) => void) {
+      const _walk = (nodes: FibHeapNode[]) => {
+        nodes.forEach(function(node) {
+          fun(node);
+          if (node.children && node.children.length != 0) {
+            _walk(node.children);
+          }
+        });
+      };
+      _walk(this.nodes);
     }
 
     /**
@@ -71,7 +83,7 @@ class FibHeap {
         while (A[d] != null) {
           let y = A[d];
           // console.log(x);
-          if (x.key > y.key) {
+          if (x.key < y.key) {
             [y, x] = [x, y];
           }
           _.pull(this.nodes, y);
@@ -85,16 +97,16 @@ class FibHeap {
         }
         A[d] = x;
       }
-      this.min = null;
+      this.max = null;
       for (let i = 0; i < A.length; i++) {
         if (A[i] != null) {
-          if (this.min == null) {
+          if (this.max == null) {
             this.nodes = [A[i]];
-            this.min = A[i];
+            this.max = A[i];
           } else {
             this.nodes.push(A[i]);
-            if (A[i].key < this.min.key) {
-              this.min = A[i];
+            if (A[i].key > this.max.key) {
+              this.max = A[i];
             }
           }
         }
@@ -103,11 +115,11 @@ class FibHeap {
     }
 
     /**
-     * Extract the minimal node from this heap.
+     * Extract the maximal node from this heap.
      * Time Complexity: O(lg(n))
      */
-    extractMin() {
-      const z = this.min;
+    extractMax() {
+      const z = this.max;
       if ( z != null) {
         for (const c of z.children ?? []) {
           this.nodes.push(c);
@@ -117,9 +129,9 @@ class FibHeap {
         _.pull(this.nodes, z);
       }
       if (this.nodes.length == 0) {
-        this.min = null;
+        this.max = null;
       } else {
-        this.min = this.nodes[0];
+        this.max = this.nodes[0];
         this.consolidate();
       }
       this.n --;
@@ -127,16 +139,16 @@ class FibHeap {
 
     remove(n: FibHeapNode) {
       this.decreaseKey(n, Number.NEGATIVE_INFINITY);
-      this.extractMin();
+      this.extractMax();
     }
 
     decreaseKey(n: FibHeapNode, key: number) {
-      if (key > n.key) {
-        throw new Error('New key is greater than old key!');
+      if (key < n.key) {
+        throw new Error('New key is smaller than old key!');
       }
       n.key = key;
       const y = n.father;
-      if (y != null && n.key < y.key) {
+      if (y != null && n.key > y.key) {
         const cut = (x: FibHeapNode, y: FibHeapNode) => {
           _.pull(y.children, x);
           y.degree --;
@@ -158,16 +170,20 @@ class FibHeap {
         cut(n, y);
         cascadingCut(y);
       }
-      if (n.key < this.min.key ) {
-        this.min = n;
+      if (n.key > this.max.key ) {
+        this.max = n;
       }
     }
 
     insert(key: number, data: any): FibHeapNode {
       const n = new FibHeapNode(key, data);
       this.insertNode(n);
-      console.log('Inserted ', key);
+      // console.log('Inserted ', key);
       return n;
+    }
+
+    empty(): Boolean {
+      return this.n == 0;
     }
 
     insertNode(x: FibHeapNode) {
@@ -175,13 +191,13 @@ class FibHeap {
       x.father = null;
       x.children = [];
       x.mark = false;
-      if (this.min === null) {
-        this.min = x;
+      if (this.max === null) {
+        this.max = x;
         this.nodes.push(x);
       } else {
         this.nodes.push(x);
-        if (this.min.key > x.key) {
-          this.min = x;
+        if (this.max.key < x.key) {
+          this.max = x;
         }
       }
       this.n ++;
