@@ -21,6 +21,7 @@ export class Airport {
     currentTime: moment.Moment;
     planesOutQueue: Array<Plane>;
     servedCount: number;
+    crashedPlanes: Array<Plane>;
 
     constructor() {
       this.planes = [];
@@ -30,6 +31,7 @@ export class Airport {
       this.servedCount = 0;
       this.currentTime = moment(new Date(1970, 0, 1));
       this.planesOutQueue = [];
+      this.crashedPlanes = [];
     }
 
     addPlane(options: addPlaneOption) {
@@ -64,7 +66,10 @@ export class Airport {
         if (p.type == 'landing') {
           p.fuel -= fuelConsumption;
           if (p.fuel < 0) {
-            console.log(p.toString(), 'CRASHED!!!!!!!!!!!!!!!!');
+            // CRASHED!
+            this.queue.remove(p.heapNode);
+            this.crashedPlanes.push(p);
+            p.status = 'crashed';
           }
         }
         this.queue.decreaseKey(p.heapNode, p.priority());
@@ -73,13 +78,13 @@ export class Airport {
       this.planes.filter(
           (p) => p.time <= this.currentTime && p.status == 'waiting',
       ).forEach((p) => {
-        // debug && console.log(`${p.name} is added to queue.`);
+        debug && console.log(`${p.name} is added to queue.`);
         // Pushing plane into queue.
         p.heapNode = this.queue.insert(p.priority(), p);
         p.status = 'queueing';
       });
 
-      // Pop 4 planes for normal lane.
+      // Pop 3 planes for normal lane.
       let haveEmergency = false;
       const planeOutQueue: Array<Plane> = [];
       for (let i = 0; i < 3; ++ i) {
@@ -125,8 +130,8 @@ export class Airport {
       this.planesOutQueue = planeOutQueue;
       debug && console.log(`At time ${this.currentTime.format('HH:mm')},
 planes out queue are`);
-      this.planesOutQueue.forEach((p) => {
-        debug && console.log(p.toString());
+      debug && this.planesOutQueue.forEach((p) => {
+        console.log(p.toString());
       });
     }
 }

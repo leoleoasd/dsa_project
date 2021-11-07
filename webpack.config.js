@@ -15,7 +15,7 @@ module.exports = {
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src/'),
+      '@': path.resolve(__dirname, 'src/'),
     },
     extensions: ['.tsx', '.ts', '.js'],
   },
@@ -25,7 +25,7 @@ module.exports = {
       filename: 'index.html',
       template: 'public/index.html',
     }),
-    new webpack.HotModuleReplacementPlugin(),
+    // new webpack.HotModuleReplacementPlugin(),
     new ESLintPlugin({
       extensions: ['ts'],
       context: 'src',
