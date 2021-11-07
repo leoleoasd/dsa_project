@@ -25,30 +25,30 @@ export default (app: PIXI.Application) => {
     load.texture = loadTexture;
   });
   load.on('pointerdown', async (event) => {
-    // console.log(event);
-    // const fileName: File = await new Promise((resolve) => {
-    //   const input = document.createElement('input');
-    //   input.type = 'file';
-    //   input.style.display = 'none';
-    //   document.body.appendChild(input);
-    //   input.onchange = () => {
-    //     resolve(input.files[0]);
-    //     input.remove();
-    //   };
-    //   input.click();
-    // });
-    // const text: string = await new Promise((resolve, reject) => {
-    //   const fr = new FileReader();
-    //   fr.onload = (x) => resolve(fr.result.toString());
-    //   fr.readAsText(fileName);
-    // });
-    const text = `CA1935 07:45 0
-CZ7101 08:25 0
-CA1501 08:40 0
-FM9501 08:40 0
-HU7604 0 08:55
-MU5104 0 09:00 100
-`;
+    console.log(event);
+    const fileName: File = await new Promise((resolve) => {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.style.display = 'none';
+      document.body.appendChild(input);
+      input.onchange = () => {
+        resolve(input.files[0]);
+        input.remove();
+      };
+      input.click();
+    });
+    const text: string = await new Promise((resolve, reject) => {
+      const fr = new FileReader();
+      fr.onload = (x) => resolve(fr.result.toString());
+      fr.readAsText(fileName);
+    });
+    //     const text = `CA1935 00:00 0
+    // CZ7101 00:01 0
+    // CA1501 00:02 0
+    // FM9501 00:03 0
+    // HU7604 0 00:05
+    // MU5104 0 00:10 100
+    // `;
     const airport = new Airport();
     const pattern = /^([A-Z0-9]+) (\d\d:\d\d|0) (\d\d:\d\d|0)( \d+|)$/;
     for (const [i, line] of text.split('\n').entries()) {

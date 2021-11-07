@@ -46,8 +46,6 @@ export class Airport {
     }
 
     interval(debug: boolean = false) {
-      // tic toc
-      this.currentTime = this.currentTime.add(5, 'minutes');
       // calculate load
       this.takeoffLoad = loadFactor * this.takeoffLoad +
             (1 - loadFactor) * _.sum(
