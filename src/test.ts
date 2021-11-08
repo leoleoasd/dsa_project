@@ -3,37 +3,13 @@ import {Airport} from './lib/airport';
 import * as _ from 'lodash';
 
 const a = new Airport();
-// const times = [
-//   '00:00',
-//   '00:00',
-//   '00:00',
-//   '00:00',
-//   '00:00',
-//   '00:06',
-//   '00:06',
-//   '00:06',
-//   '00:06',
-//   '00:06',
-//   '00:11',
-//   '00:11',
-//   '00:11',
-//   '00:11',
-//   '00:11',
-//   '00:11',
-//   '00:11',
-//   '00:11',
-//   '00:11',
-//   '00:11',
-// ];
 let minute = 0;
 for (let i = 0; i < 30; ++ i) {
   minute += 1;
   const hour = Math.floor(minute / 60);
-  // console.log(i, `${('00' + hour).slice(-2)}:${('00' + minute % 60).slice(-2)}`);
   a.addPlane({
     name: `Plane ${i}`,
     time: `${('00' + hour).slice(-2)}:${('00' + minute % 60).slice(-2)}`,
-    // time: `00:${('00' + Math.floor((i*5 / 4))).slice(-2)}`,
     type: 'takeoff',
     fuel: 100,
     nice: 0,

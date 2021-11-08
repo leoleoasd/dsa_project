@@ -15,12 +15,19 @@
     </noscript>
     <input type="range" min="0" max="200" value="100" class="slider" id="scale" onchange="changeScale()">
     <input type="range" min="0" max="60" value="1" class="slider" id="speed">
-    <div id="app">
+    <div id="container">
+        <div id="app">
+
+        </div>
+        <div id="tree" style="height: 500px; width: 500px; background-color: white;">
+
+        </div>
     </div>
     <!-- require cdn assets js -->
     <% for (var i in htmlWebpackPlugin.options.cdn && htmlWebpackPlugin.options.cdn.js) { %>
     <script type="text/javascript" src="<%= htmlWebpackPlugin.options.cdn.js[i] %>"></script>
     <% } %>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"> </script>
     <script>
         function changeScale(){
             var scale = document.getElementById("scale").value;

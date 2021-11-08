@@ -5,8 +5,9 @@ class FibHeapNode {
     key: number;
     degree: number;
     mark: boolean;
-    father: FibHeapNode;
+    parent: FibHeapNode;
     data: any;
+    id: any;
 
     constructor(key: number, data: any) {
       this.key = key;
@@ -89,7 +90,7 @@ class FibHeap {
           _.pull(this.nodes, y);
           i--;
           x.children.push(y);
-          y.father = x;
+          y.parent = x;
           x.degree++;
           y.mark = false;
           A[d] = null;
@@ -123,7 +124,7 @@ class FibHeap {
       if ( z != null) {
         for (const c of z.children ?? []) {
           this.nodes.push(c);
-          c.father = null;
+          c.parent = null;
         }
         z.children = [];
         _.pull(this.nodes, z);
@@ -137,27 +138,37 @@ class FibHeap {
       this.n --;
     }
 
+    heapify() {
+      if (this.nodes.length == 0) {
+        this.max = null;
+      } else {
+        this.max = this.nodes[0];
+        this.consolidate();
+      }
+    }
+
     remove(n: FibHeapNode) {
-      this.decreaseKey(n, Number.NEGATIVE_INFINITY);
+      this.decreaseKey(n, Number.POSITIVE_INFINITY);
       this.extractMax();
     }
 
     decreaseKey(n: FibHeapNode, key: number) {
       if (key < n.key) {
+        console.log(n, key);
         throw new Error('New key is smaller than old key!');
       }
       n.key = key;
-      const y = n.father;
+      const y = n.parent;
       if (y != null && n.key > y.key) {
         const cut = (x: FibHeapNode, y: FibHeapNode) => {
           _.pull(y.children, x);
           y.degree --;
           this.nodes.push(x);
-          x.father = null;
+          x.parent = null;
           x.mark = false;
         };
         const cascadingCut = (y: FibHeapNode) => {
-          const z = y.father;
+          const z = y.parent;
           if (z != null) {
             if (y.mark == false) {
               y.mark = true;
@@ -188,7 +199,7 @@ class FibHeap {
 
     insertNode(x: FibHeapNode) {
       x.degree = 0;
-      x.father = null;
+      x.parent = null;
       x.children = [];
       x.mark = false;
       if (this.max === null) {

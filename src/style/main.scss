@@ -10,7 +10,7 @@ body {
 html {
   height: 100%;
 }
-#app {
+#container {
   height: calc(100vh - 25px);
   display: flex;
   justify-content: center;
@@ -18,4 +18,13 @@ html {
   flex-direction: row;
   align-content: center;
   flex-wrap: nowrap;
+}
+
+.link {
+  stroke: #ccc;
+}
+
+.node text {
+  pointer-events: none;
+  font: 10px sans-serif;
 }

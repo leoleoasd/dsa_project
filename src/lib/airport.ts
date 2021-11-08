@@ -29,7 +29,7 @@ export class Airport {
       this.takeoffLoad = 0;
       this.landingLoad = 0;
       this.servedCount = 0;
-      this.currentTime = moment(new Date(1970, 0, 1));
+      this.currentTime = moment(new Date(1970, 0, 1, 0, 0, 1));
       this.planesOutQueue = [];
       this.crashedPlanes = [];
     }
@@ -65,11 +65,14 @@ export class Airport {
           p.fuel -= fuelConsumption;
           if (p.fuel < 0) {
             // CRASHED!
+            console.log('CRASHED');
             this.queue.remove(p.heapNode);
             this.crashedPlanes.push(p);
             p.status = 'crashed';
+            return;
           }
         }
+        console.log(p);
         this.queue.decreaseKey(p.heapNode, p.priority());
       });
       // Push plane into queue if needed.
@@ -123,6 +126,7 @@ export class Airport {
           p.heapNode = this.queue.insert(p.priority(), p);
         });
       }
+      this.queue.heapify();
       planeOutQueue.forEach((p) => p.status = 'served');
       this.servedCount += planeOutQueue.length;
       this.planesOutQueue = planeOutQueue;
