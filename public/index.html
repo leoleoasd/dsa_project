@@ -14,12 +14,12 @@
         <strong>We're sorry but this application doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
     <input type="range" min="0" max="200" value="100" class="slider" id="scale" onchange="changeScale()">
-    <input type="range" min="0" max="60" value="1" class="slider" id="speed">
+    <input type="range" min="0" max="120" value="1" class="slider" id="speed">
     <div id="container">
         <div id="app">
 
         </div>
-        <div id="tree" style="height: 500px; width: 500px; background-color: white;">
+        <div id="tree">
 
         </div>
     </div>
@@ -31,7 +31,7 @@
     <script>
         function changeScale(){
             var scale = document.getElementById("scale").value;
-            document.getElementById("app").firstElementChild.style.transform = "scale("+scale/100+")";
+            document.getElementById("app").firstElementChild.style.transform = "scale("+scale/100 / window.devicePixelRatio+")";
         }
     </script>
     <!-- built files will be auto injected -->

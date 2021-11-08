@@ -10,6 +10,19 @@ body {
 html {
   height: 100%;
 }
+
+#app {
+  height: 800px;
+  width: 800px;
+}
+
+#tree {
+  height: 800px;
+  //width: 500px;
+  flex: 1;
+  background-color: white;
+}
+
 #container {
   height: calc(100vh - 25px);
   display: flex;
@@ -20,6 +33,13 @@ html {
   flex-wrap: nowrap;
 }
 
+#app > canvas.scale-2 {
+  transform: scale(0.5);
+  position: relative;
+  top: -400px;
+  left: -400px;
+}
+
 .link {
   stroke: #ccc;
 }
@@ -27,4 +47,14 @@ html {
 .node text {
   pointer-events: none;
   font: 10px sans-serif;
+  user-select: none;
+}
+
+@font-face {
+  font-family: "novem__";
+  src: url("//localhost:9090/assets/novem__.woff") format("woff");
+}
+
+input[type="range"] {
+  width:400px;
 }

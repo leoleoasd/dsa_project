@@ -30,8 +30,8 @@ export default (data: FibHeap) => {
     }
   });
 
-  const width = 500;
-  const height = 500;
+  const width = document.getElementById('tree').clientWidth;
+  const height = 800;
 
   const svg = d3.select('#tree').append('svg')
       .attr('width', width)

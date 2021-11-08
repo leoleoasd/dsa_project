@@ -25,7 +25,7 @@ export default (app: PIXI.Application) => {
     load.texture = loadTexture;
   });
   load.on('pointerdown', async (event) => {
-    console.log(event);
+    // console.log(event);
     const fileName: File = await new Promise((resolve) => {
       const input = document.createElement('input');
       input.type = 'file';
@@ -72,7 +72,7 @@ export default (app: PIXI.Application) => {
         return;
       }
     }
-    console.log(airport);
+    // console.log(airport);
     // console.log(text);
     app.stage.removeChild(load);
     app.stage.removeChild(home);

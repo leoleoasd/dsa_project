@@ -19,7 +19,7 @@ for (let i = 30; i < 1000; ++i) {
   minute += [1, 1, 1, 2][i % 4];
   const hour = Math.floor(minute / 60);
   // minute %= 60;
-  console.log(i, `${('00' + hour).slice(-2)}:${('00' + minute % 60).slice(-2)}`);
+  // console.log(i, `${('00' + hour).slice(-2)}:${('00' + minute % 60).slice(-2)}`);
   a.addPlane({
     name: `Plane ${i}`,
     time: `${('00' + hour).slice(-2)}:${('00' + minute % 60).slice(-2)}`,
