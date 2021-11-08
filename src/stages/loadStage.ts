@@ -72,6 +72,7 @@ export default (app: PIXI.Application) => {
         return;
       }
     }
+    airport.planes.sort((a, b) => a.time > b.time ? 1 : -1);
     // console.log(airport);
     // console.log(text);
     app.stage.removeChild(load);

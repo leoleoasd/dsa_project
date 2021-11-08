@@ -31,7 +31,7 @@ export default (data: FibHeap) => {
   });
 
   const width = document.getElementById('tree').clientWidth;
-  const height = 800;
+  const height = document.getElementById('tree').clientHeight;
 
   const svg = d3.select('#tree').append('svg')
       .attr('width', width)
@@ -64,8 +64,8 @@ export default (data: FibHeap) => {
       .enter().append('g')
       .attr('class', 'node');
 
-  node.append('circle').attr('fill', (d) => '#fff')
-      .attr('stroke', (d) => '#000')
+  node.append('circle').attr('fill', (d) => '#000')
+      .attr('stroke', (d) => '#fff')
       .attr('r', 3.5);
 
   node.on('dblclick', function(d) {
@@ -84,7 +84,7 @@ export default (data: FibHeap) => {
   node.append('text')
       .attr('dx', 12)
       .attr('dy', '.35em')
-      .style('fill', (d) => d.max ? 'red' : 'black')
+      .style('fill', (d) => d.max ? 'red' : 'white')
       .text(function(d: any) {
         return '✈' + d.name;
       });

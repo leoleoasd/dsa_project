@@ -25,7 +25,6 @@ module.exports = {
       filename: 'index.html',
       template: 'public/index.html',
     }),
-    // new webpack.HotModuleReplacementPlugin(),
     new ESLintPlugin({
       extensions: ['ts'],
       context: 'src',

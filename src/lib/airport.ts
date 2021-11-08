@@ -87,6 +87,7 @@ export class Airport {
 
       // Pop 3 planes for normal lane.
       let haveEmergency = false;
+      let emergencyID = -1;
       const planeOutQueue: Array<Plane> = [];
       for (let i = 0; i < 3; ++ i) {
         if (this.queue.empty()) break;
@@ -94,6 +95,7 @@ export class Airport {
 
         if (p.type != 'landing' || p.fuel <= 10) {
           haveEmergency = true;
+          emergencyID = i;
         }
         planeOutQueue.push(p);
         this.queue.extractMax();
@@ -105,6 +107,8 @@ export class Airport {
           const p = this.queue.findMax().data;
           this.queue.extractMax();
           planeOutQueue.push(p);
+          [planeOutQueue[emergencyID], planeOutQueue[3]] =
+              [planeOutQueue[3], planeOutQueue[emergencyID]];
         }
       } else {
         // we don't have a emergency plane.

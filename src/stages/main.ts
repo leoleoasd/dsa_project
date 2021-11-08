@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import {Airport} from '../lib/airport';
+import {Plane} from '../lib/plane';
 import tree from '../lib/tree';
 import {time} from 'd3';
 
@@ -14,6 +15,30 @@ const putUnder = (a: PIXI.Text, b: PIXI.Text, last: boolean = false) => {
   b.anchor.set(0.5);
   b.x = a.x + a.width / 2 - (last ? 0 : labelOffset);
   b.y = a.y + a.height;
+};
+
+const makeTable = (planes: Iterable<Plane>, header1: string, header2: string, displayFuel: boolean = false) => {
+  const tbl = document.createElement('table');
+  tbl.style.width = '100vv';
+  tbl.style.border = '1px solid black';
+  const header = tbl.insertRow();
+  header.insertCell().innerHTML = header1;
+  header.insertCell().innerHTML = header2;
+  if (displayFuel) {
+    header.insertCell().innerHTML = '剩余燃油';
+  }
+  for (const plane of planes) {
+    const tr = tbl.insertRow();
+    const name = tr.insertCell();
+    name.appendChild(document.createTextNode(plane.name));
+    const time = tr.insertCell();
+    time.appendChild(document.createTextNode(plane.time.format('HH:mm')));
+    if (displayFuel) {
+      const fuel = tr.insertCell();
+      fuel.appendChild(document.createTextNode(plane.type == 'landing' ? plane.fuel.toString() : 'N/A'));
+    }
+  }
+  return tbl;
 };
 
 export default (app: PIXI.Application, airport: Airport) => {
@@ -84,6 +109,13 @@ export default (app: PIXI.Application, airport: Airport) => {
       queueingText.text = `${airport.queue.n} / `;
       crashedText.text = `${airport.crashedPlanes.length} / `;
       adjustTexts();
+      document.getElementById('tables').innerHTML = '';
+      const takeOffTable = makeTable(airport.planes.filter((p) => p.type == 'takeoff' && p.status == 'waiting'), '起飞队列', '起飞时间');
+      const landingTable = makeTable(airport.planes.filter((p) => p.type == 'landing' && p.status == 'waiting'), '降落队列', '降落时间');
+      const queueingTable = makeTable(airport.planes.filter((p) => p.status == 'queueing'), '队列', '起飞 / 降落时间', true);
+      document.getElementById('tables').appendChild(takeOffTable);
+      document.getElementById('tables').appendChild(landingTable);
+      document.getElementById('tables').appendChild(queueingTable);
     }
 
     for (const [index, plane] of airport.planesOutQueue.entries()) {

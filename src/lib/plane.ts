@@ -50,11 +50,9 @@ class Plane {
       this.sprite = container;
       container.pivot.x = 0;
       container.pivot.y = 50;
-      // if (this.type == 'takeoff') {
       text.scale.x = -1;
       container.scale.x = -1;
       container.pivot.x = 100;
-      // }
       return container;
     }
 
