@@ -1,15 +1,18 @@
 import * as PIXI from 'pixi.js';
 import {Airport} from '../lib/airport';
 import main from './main';
+import homeIcon from '../assets/home.png';
+import loadIcon from '../assets/load.png';
+import loadHoverIcon from '../assets/load-hover.png';
 
 export default (app: PIXI.Application) => {
-  const home = PIXI.Sprite.from('assets/home.png');
+  const home = PIXI.Sprite.from(homeIcon);
   home.anchor.set(0.5);
   home.x = app.screen.width / 2;
   home.y = app.screen.height / 2;
   app.stage.addChild(home);
-  const loadTexture = PIXI.Texture.from('assets/load.png');
-  const loadHoverTexture = PIXI.Texture.from('assets/load-hover.png');
+  const loadTexture = PIXI.Texture.from(loadIcon);
+  const loadHoverTexture = PIXI.Texture.from(loadHoverIcon);
 
   const load = PIXI.Sprite.from(loadTexture);
   load.scale.set(0.5);

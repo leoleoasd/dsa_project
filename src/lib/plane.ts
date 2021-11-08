@@ -2,6 +2,7 @@ import {FibHeapNode} from './fibonacci';
 import {fuelFactor} from './config';
 import * as moment from 'moment';
 import * as PIXI from 'pixi.js';
+import planeIcon from '../assets/plane.png';
 // const fuelFactor = 0.2;
 
 class Plane {
@@ -34,7 +35,7 @@ class Plane {
     getSprite(): PIXI.Container {
       if (this.sprite) return this.sprite;
       const container = new PIXI.Container();
-      const ps = PIXI.Sprite.from('/assets/plane.png');
+      const ps = PIXI.Sprite.from(planeIcon);
       ps.x = 0;
       ps.y = 0;
       const tailSprite = PIXI.Sprite.from(`https://content.airhex.com/content/logos/airlines_${this.name.slice(0, 2)}_32_32_t.png`);

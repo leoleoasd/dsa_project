@@ -2,6 +2,7 @@ import * as PIXI from 'pixi.js';
 import {Airport} from '../lib/airport';
 import {Plane} from '../lib/plane';
 import tree from '../lib/tree';
+import airportIcon from '../assets/airport.png';
 import {time} from 'd3';
 
 const labelOffset = (new PIXI.Text(' / ', {fontSize: 55, fill: 'white', align: 'left', fontFamily: 'novem__'})).width / 2 + 5;
@@ -42,7 +43,7 @@ const makeTable = (planes: Iterable<Plane>, header1: string, header2: string, di
 };
 
 export default (app: PIXI.Application, airport: Airport) => {
-  const airportSprite = PIXI.Sprite.from('/assets/airport.png');
+  const airportSprite = PIXI.Sprite.from(airportIcon);
   app.stage.addChild(airportSprite);
   const timeText = new PIXI.Text(`${airport.currentTime.format('HH:mm')}, `, {fontSize: 55, fill: 'white', align: 'left', fontFamily: 'novem__'});
   const servedText = new PIXI.Text(`${airport.servedCount} / `, {fontSize: 55, fill: 'white', align: 'left', fontFamily: 'novem__'});
