@@ -51,8 +51,8 @@ export default (app: PIXI.Application, airport: Airport) => {
   app.stage.addChild(crashedLabel);
   app.stage.addChild(allLabel);
   let elapsed = 0.0;
-  let lastMinute = 0;
-  let lastInterval = -5000;
+  let minuteCount = 0;
+  let intervalCount = 0;
   const ticker = (delta: number) => {
     // @ts-ignore
     if (app.ticker.speed != document.getElementById('speed').value) {
@@ -62,14 +62,15 @@ export default (app: PIXI.Application, airport: Airport) => {
     elapsed += app.ticker.deltaMS;
     airport.currentTime.hour(0);
     airport.currentTime.minute(Math.floor(elapsed / 1000));
-    if (elapsed - lastMinute > 1000) {
-      lastMinute = elapsed;
+    while (elapsed > minuteCount * 1000) {
+      minuteCount ++;
       timeText.text = `${airport.currentTime.format('HH:mm')}, `;
       adjustTexts();
     }
-    if (elapsed - lastInterval >= 5000) {
+    while (elapsed > intervalCount * 5000) {
       // console.log(elapsed, lastInterval);
-      lastInterval = elapsed;
+      // lastInterval = elapsed;
+      intervalCount++;
       for (const plane of airport.planesOutQueue) {
         app.stage.removeChild(plane.getSprite());
       }
@@ -87,11 +88,11 @@ export default (app: PIXI.Application, airport: Airport) => {
 
     for (const [index, plane] of airport.planesOutQueue.entries()) {
       plane.getSprite().x = 15 * 8 + (plane.type == 'takeoff' ?
-          Math.pow(((elapsed - lastInterval) / 5000), 2) :
-          1 - Math.pow(1 - ((elapsed - lastInterval) / 5000), 2)) * 55 * 8;
+          Math.pow(((elapsed - intervalCount * 5000 + 5000) / 5000), 2) :
+          1 - Math.pow(1 - ((elapsed - intervalCount * 5000 + 5000) / 5000), 2)) * 55 * 8;
       plane.getSprite().y = (31 + 17 * index) * 8 - (plane.type == 'takeoff' ?
-          Math.pow(((elapsed - lastInterval) / 5000), 4) :
-          Math.pow(1 - ((elapsed - lastInterval) / 5000), 4)) * 10 * 8;
+          Math.pow(((elapsed - intervalCount * 5000 + 5000) / 5000), 4) :
+          Math.pow(1 - ((elapsed - intervalCount * 5000 + 5000) / 5000), 4)) * 10 * 8;
     }
     if (airport.servedCount + airport.crashedPlanes.length == airport.planes.length && airport.planesOutQueue.length == 0) {
       alert('模拟完成！');
